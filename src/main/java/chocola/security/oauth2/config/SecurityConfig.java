@@ -11,12 +11,20 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain1(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(request -> request.anyRequest().authenticated())
                 .formLogin(withDefaults())
                 .apply(new CustomSecurityConfigurer().setSecure(false));
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain2(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                .httpBasic(withDefaults())
+                .build();
     }
 }
