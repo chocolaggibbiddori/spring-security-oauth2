@@ -14,7 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(request -> request
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .oauth2Login(withDefaults())
                 .build();
     }
