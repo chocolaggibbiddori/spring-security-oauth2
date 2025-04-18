@@ -2,6 +2,9 @@ package chocola.security.oauth2.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -61,5 +64,15 @@ public class IndexController {
         OidcUserService oidcUserService = new OidcUserService();
 
         return oidcUserService.loadUser(oidcUserRequest);
+    }
+
+    @GetMapping("/authentication")
+    public Authentication authentication(Authentication authentication) {
+        return authentication;
+    }
+
+    @GetMapping("/authentication/principal")
+    public AuthenticatedPrincipal principal(@AuthenticationPrincipal OAuth2User principal) {
+        return principal;
     }
 }
