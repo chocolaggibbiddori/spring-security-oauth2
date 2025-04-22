@@ -9,8 +9,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -21,8 +19,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated())
-                .oauth2Login(withDefaults())
+                .oauth2Login(login -> login
+                        .loginPage("/login")
+                        .authorizationEndpoint(endpoint -> endpoint
+                                .baseUri("/oauth2/v1/authorization"))
+                        .redirectionEndpoint(endpoint -> endpoint
+                                .baseUri("/login/v1/oauth2/code/*")))
                 .logout(logout -> logout
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                         .invalidateHttpSession(true)
