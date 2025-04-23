@@ -19,15 +19,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/home").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(login -> login
-                        .loginPage("/login")
-                        .authorizationEndpoint(endpoint -> endpoint
-                                .baseUri("/oauth2/v1/authorization"))
-                        .redirectionEndpoint(endpoint -> endpoint
-                                .baseUri("/login/v1/oauth2/code/*")))
+                        .defaultSuccessUrl("/home"))
                 .logout(logout -> logout
+                        .logoutSuccessUrl("/home")
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
@@ -37,7 +34,7 @@ public class SecurityConfig {
 
     private LogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedLogoutSuccessHandler successHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-        successHandler.setPostLogoutRedirectUri("http://localhost:8081/login");
+        successHandler.setPostLogoutRedirectUri("http://localhost:8081/home");
 
         return successHandler;
     }
