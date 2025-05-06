@@ -21,7 +21,7 @@ spring:
             client-name: oauth2-client-chocola2
             redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
             authorization-grant-type: authorization_code
-            client-authentication-method: none
+            client-authentication-method: client_secret_post
             scope: openid, email
             provider: keycloak
         provider:
